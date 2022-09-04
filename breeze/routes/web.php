@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
@@ -22,8 +23,9 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dasbreezehboard');
+Route::group(['middleware' => 'prevent-back'],function(){
+	// Auth::routes();
+	Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');;
+});
 
 require __DIR__.'/auth.php';
