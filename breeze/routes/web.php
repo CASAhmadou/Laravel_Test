@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
+// Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
+//     Route::get('/ofms',[AdminController::class,'adminGetOfms'])->name('admin.ofms');
+// });
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,13 +22,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => ['auth']], function(){
+Route::group(['middleware' => ['auth','prevent-back']], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/user', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::group(['middleware' => 'prevent-back'],function(){
-	// Auth::routes();
-	Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');;
-});
+
+Route::get('/admin', function(){
+    return view('admin');
+ });
+
 
 require __DIR__.'/auth.php';
+
